@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Trama dos Fios - Tecelagens de Caxias</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in-subtle': 'fadeInSubtle 0.5s ease-out forwards',
+                        'slide-up-subtle': 'slideUpSubtle 0.5s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeInSubtle: {
+                            '0%': { opacity: 0 },
+                            '100%': { opacity: 1 },
+                        },
+                        slideUpSubtle: {
+                            '0%': { opacity: 0, transform: 'translateY(10px)' },
+                            '100%': { opacity: 1, transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="antialiased bg-gray-50 dark:bg-slate-900 text-gray-800 dark:text-gray-200">
+    <div id="stickyHeaderNavWrapper" class="sticky top-0 z-50 transition-transform duration-300 ease-in-out bg-white dark:bg-slate-800 shadow-md">
+        <header id="pageHeader" class="py-4 sm:py-5">
+            <div class="container mx-auto px-4 flex justify-between items-center">
+                <div class="flex-1 text-center sm:text-left">
+                    <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-sky-700 dark:text-sky-400">A Trama dos Fios 🧵</h1>
+                    <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1">Um Infográfico Interativo sobre a História das Tecelagens de Caxias do Sul</p>
+                </div>
+                <div class="flex-initial">
+                    <button id="darkModeToggle" class="p-2 rounded-full text-xl text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-sky-500 transition-colors" aria-label="Alternar tema">
+                        <span class="dark-mode-icon inline">🌙</span>
+                        <span class="light-mode-icon hidden">☀️</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <nav id="mainNav" class="border-t border-gray-200 dark:border-slate-700 py-3">
+            <div class="container mx-auto px-4">
+                <ul class="flex flex-wrap justify-center gap-2 sm:gap-3 mb-3">
+                    <li><button data-section="intro" class="nav-button px-3 py-2 text-xs sm:text-sm font-medium rounded-lg shadow-sm transition-all duration-150 ease-in-out active"><i class="fa-solid fa-compass fa-fw mr-1 sm:mr-2"></i>Visão Geral</button></li>
+                    <li><button data-section="panceri" class="nav-button px-3 py-2 text-xs sm:text-sm font-medium rounded-lg shadow-sm transition-all duration-150 ease-in-out"><i class="fa-solid fa-crown fa-fw mr-1 sm:mr-2"></i>Panceri</button></li>
+                    <li><button data-section="pompeia" class="nav-button px-3 py-2 text-xs sm:text-sm font-medium rounded-lg shadow-sm transition-all duration-150 ease-in-out"><i class="fa-solid fa-church fa-fw mr-1 sm:mr-2"></i>Pompeia</button></li>
+                    <li><button data-section="scavino" class="nav-button px-3 py-2 text-xs sm:text-sm font-medium rounded-lg shadow-sm transition-all duration-150 ease-in-out"><i class="fa-solid fa-ribbon fa-fw mr-1 sm:mr-2"></i>Scavino & Bertuzzi</button></li>
+                    <li><button data-section="gallery" class="nav-button px-3 py-2 text-xs sm:text-sm font-medium rounded-lg shadow-sm transition-all duration-150 ease-in-out"><i class="fa-solid fa-images fa-fw mr-1 sm:mr-2"></i>Galeria de Imagens</button></li>
+                    <li><button data-section="sobre" class="nav-button px-3 py-2 text-xs sm:text-sm font-medium rounded-lg shadow-sm transition-all duration-150 ease-in-out"><i class="fa-solid fa-info-circle fa-fw mr-1 sm:mr-2"></i>Sobre</button></li>
+                </ul>
+                <div id="search-controls-wrapper" class="mt-2 flex flex-col sm:flex-row justify-center items-center gap-2 px-2">
+                    <input type="search" id="searchBar" placeholder="Pesquisar por palavra-chave ou ano..." class="w-full sm:max-w-md px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-sky-500 dark:focus:ring-sky-400 focus:border-transparent dark:bg-slate-700 dark:text-white text-sm">
+                    <div class="flex gap-2 mt-2 sm:mt-0">
+                        <button id="executeSearchButton" class="px-4 py-2 rounded-lg transition-colors text-sm shadow-sm flex items-center justify-center bg-sky-600 hover:bg-sky-700 text-white dark:bg-sky-500 dark:hover:bg-sky-600"><i class="fa-solid fa-magnifying-glass mr-2"></i>Buscar</button>
+                        <button id="clearSearchButton" class="px-4 py-2 rounded-lg transition-colors text-sm shadow-sm flex items-center justify-center bg-gray-500 hover:bg-gray-600 text-white dark:bg-slate-600 dark:hover:bg-slate-500"><i class="fa-solid fa-eraser mr-2"></i>Limpar</button>
+                    </div>
+                </div>
+                <div id="noResultsMessage" class="text-center mt-3 text-sm text-gray-600 dark:text-gray-400" style="display: none;">Nenhum evento encontrado para a sua pesquisa.</div>
+                <div id="noResultsMessageGallery" class="text-center mt-3 text-sm text-gray-600 dark:text-gray-400" style="display: none;">Nenhuma imagem encontrada para sua pesquisa na galeria.</div>
+            </div>
+        </nav>
+    </div>
+
+    <main class="container mx-auto p-4 md:p-6 mt-4">
+        <div id="loading-indicator" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-[2000] transition-opacity duration-300 opacity-0 pointer-events-none" style="display: none;">
+            <div class="loader-spinner"></div>
+        </div>
+
+        <section id="intro" class="content-section active-section p-5 sm:p-6 bg-white dark:bg-slate-800 rounded-xl shadow-xl mb-8">
+            <h2 class="text-xl sm:text-2xl font-semibold mb-4 content-heading border-b-2 border-gray-200 dark:border-slate-700 pb-3"><i class="fa-solid fa-compass mr-3 text-sky-600 dark:text-sky-400"></i>Visão Geral da Indústria Têxtil em Caxias do Sul</h2>
+            <p class="content-paragraph leading-relaxed mb-6 text-sm sm:text-base text-gray-700 dark:text-gray-300">
+                Esta aplicação apresenta um panorama da história da indústria têxtil em Caxias do Sul, com foco nas trajetórias das tecelagens Panceri, Pompeia e Scavino & Bertuzzi. As informações aqui compiladas são baseadas em registos históricos e publicações de época, detalhando a fundação, evolução, produtos, desafios e o legado destas importantes empresas para o desenvolvimento económico e social da região. A indústria têxtil local teve início por volta de 1880, impulsionada por imigrantes com conhecimento no ofício, e floresceu ao longo de décadas, tornando Caxias do Sul um centro de tecelagem reconhecido. Utilize a navegação para explorar a história de cada família/empresa ou a barra de pesquisa para encontrar informações específicas.
+            </p>
+        </section>
+
+        <section id="panceri" class="content-section p-5 sm:p-6 bg-white dark:bg-slate-800 rounded-xl shadow-xl mb-8">
+            <h2 class="text-xl sm:text-2xl font-semibold mb-6 content-heading border-b-2 border-gray-200 dark:border-slate-700 pb-3"><i class="fa-solid fa-crown mr-3 text-amber-600 dark:text-amber-400"></i>I. A Trajetória da Família Panceri e Suas Tecelagens 🧵🦁</h2>
+            <div class="space-y-8">
+                </div>
+        </section>
+
+        <section id="pompeia" class="content-section p-5 sm:p-6 bg-white dark:bg-slate-800 rounded-xl shadow-xl mb-8">
+            <h2 class="text-xl sm:text-2xl font-semibold mb-6 content-heading border-b-2 border-gray-200 dark:border-slate-700 pb-3"><i class="fa-solid fa-church mr-3 text-orange-600 dark:text-orange-400"></i>II. A Trajetória da Tecelagem Pompeia e Luiz Pizzamiglio ⛪</h2>
+            <div class="space-y-8">
+                </div>
+        </section>
+
+        <section id="scavino" class="content-section p-5 sm:p-6 bg-white dark:bg-slate-800 rounded-xl shadow-xl mb-8">
+            <h2 class="text-xl sm:text-2xl font-semibold mb-6 content-heading border-b-2 border-gray-200 dark:border-slate-700 pb-3"><i class="fa-solid fa-ribbon mr-3 text-teal-600 dark:text-teal-400"></i>III. A História da Scavino & Bertuzzi 🧣</h2>
+            <div class="space-y-8">
+                </div>
+        </section>
+
+        <section id="gallery" class="content-section p-5 sm:p-6 bg-white dark:bg-slate-800 rounded-xl shadow-xl mb-8">
+            <h2 class="text-xl sm:text-2xl font-semibold mb-6 content-heading border-b-2 border-gray-200 dark:border-slate-700 pb-3"><i class="fa-solid fa-images mr-3 text-indigo-600 dark:text-indigo-400"></i>Galeria de Imagens Fonte 🖼️</h2>
+            <p class="content-paragraph leading-relaxed mb-3 text-sm sm:text-base text-gray-700 dark:text-gray-300">
+                Explore os documentos e recortes de jornais que serviram de base para esta pesquisa.
+            </p>
+            <div id="gallery-tag-filters-container" class="mb-6 bg-white dark:bg-slate-800 rounded-lg shadow" style="display: none;"> 
+                <button id="toggle-tag-filters-visibility" class="w-full flex justify-between items-center p-3 focus:outline-none hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg transition-colors duration-150" aria-expanded="false" aria-controls="gallery-tags-wrapper">
+                    <h4 class="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                         <span class="filter-text-mostrar"><i class="fas fa-tags mr-2"></i>Mostrar Filtros por Tags</span>
+                         <span class="filter-text-esconder" style="display:none;"><i class="fas fa-filter mr-2"></i>Esconder Filtros por Tags</span>
+                    </h4>
+                    <i id="tag-filter-chevron" class="fas fa-chevron-down ml-1 transform transition-transform duration-300"></i>
+                </button>
+                <div id="gallery-tags-wrapper" class="overflow-hidden transition-all duration-300 ease-in-out" style="max-height: 0px;"> 
+                    <div id="gallery-tags" class="flex flex-wrap gap-2 p-3 border-t border-gray-200 dark:border-slate-600">
+                        </div>
+                    <button id="clear-gallery-tags-filter" class="m-3 px-3 py-1.5 text-xs bg-red-500 hover:bg-red-600 text-white rounded-md shadow-sm transition-opacity duration-200" style="display: none;">Limpar Filtro de Tags</button>
+                </div>
+            </div>
+            <p class="content-paragraph leading-relaxed mb-6 text-sm sm:text-base text-gray-700 dark:text-gray-300">
+                Clique em cada item para abrir a imagem com opções de interação. As imagens estão agrupadas por relevância e em ordem cronológica.
+            </p>
+            <div id="imageGalleryGrid" class="space-y-6">
+                </div>
+        </section>
+
+        <section id="sobre-section" class="content-section p-5 sm:p-6 bg-white dark:bg-slate-800 rounded-xl shadow-xl mb-8 hidden">
+            <h2 class="text-xl sm:text-2xl font-semibold mb-6 content-heading border-b-2 border-gray-200 dark:border-slate-700 pb-3"><i class="fa-solid fa-info-circle mr-3 text-purple-600 dark:text-purple-400"></i>Sobre o Projeto</h2>
+            <div id="sobre-content" class="space-y-4 text-sm sm:text-base text-gray-700 dark:text-gray-300">
+                <div class="animate-slide-up-subtle">
+                    <h3 class="text-lg font-semibold mt-2 content-subheading">Motivação e Objetivos</h3>
+                    <p class="content-paragraph leading-relaxed">
+                        O projeto "A Trama dos Fios" nasceu da necessidade de resgatar, preservar e disseminar a rica história da indústria têxtil em Caxias do Sul, um pilar fundamental no desenvolvimento econômico e social da cidade. Com foco nas trajetórias emblemáticas das tecelagens Panceri, Pompeia e Scavino & Bertuzzi, este infográfico interativo busca:
+                    </p>
+                    <ul class="list-disc list-inside ml-4 my-2 space-y-1">
+                        <li>Documentar marcos históricos, desde a chegada dos pioneiros até os desafios e transformações do setor.</li>
+                        <li>Ilustrar, através de uma linha do tempo e galeria de imagens, a evolução das fábricas, maquinários e produtos.</li>
+                        <li>Destacar o impacto dessas empresas na vida dos trabalhadores e na configuração urbana e cultural de Caxias do Sul.</li>
+                        <li>Oferecer um recurso educativo e de fácil acesso para estudantes, pesquisadores, descendentes das famílias e o público em geral interessado na história industrial local.</li>
+                    </ul>
+                </div>
+                <div class="animate-slide-up-subtle" style="animation-delay: 0.1s;">
+                    <h3 class="text-lg font-semibold mt-4 content-subheading">Tecnologias Utilizadas</h3>
+                    <ul class="list-disc list-inside ml-4 space-y-1">
+                        <li><strong>Backend:</strong> Python com o microframework Flask, utilizando SQLAlchemy para interação com o banco de dados SQLite. Flask-Admin para o painel de gerenciamento de conteúdo.</li>
+                        <li><strong>Frontend:</strong> HTML5, CSS3 com Tailwind CSS para estilização responsiva e moderna, e JavaScript puro para interatividade e manipulação dinâmica do conteúdo.</li>
+                        <li><strong>Bibliotecas Adicionais:</strong> Font Awesome para ícones.</li>
+                    </ul>
+                </div>
+                <div class="animate-slide-up-subtle" style="animation-delay: 0.2s;">
+                    <h3 class="text-lg font-semibold mt-4 content-subheading">Referências Bibliográficas e Fontes Primárias</h3>
+                        <p class="content-paragraph leading-relaxed mb-2">A pesquisa para este projeto baseou-se em uma variedade de fontes, incluindo, mas não se limitando a:</p>
+                    <ul class="list-disc list-inside ml-4 space-y-1">
+                        <li>Arquivo Histórico Municipal João Spadari Adami (AHMUSA) - Caxias do Sul.</li>
+                        <li>Museu Municipal de Caxias do Sul.</li>
+                        <li>Hemeroteca da Biblioteca Pública Municipal Dr. Demetrio Niederauer (jornais como "O Pioneiro" e "Correio Riograndense").</li>
+                        <li>Artigo "MEMÓRIA - A trama dos fios", Jornal de Caxias (Pioneiro), 18 de janeiro de 1988.</li>
+                        <li>Documentos e fotografias de acervos particulares das famílias Panceri, Pizzamiglio, Scavino e Bertuzzi.</li>
+                        <li>Publicações e livros sobre a história de Caxias do Sul e da imigração italiana na região.</li>
+                        <li><em>(abc)</em></li>
+                    </ul>
+                </div>
+                <div class="animate-slide-up-subtle" style="animation-delay: 0.3s;">
+                    <h3 class="text-lg font-semibold mt-4 content-subheading">Agradecimentos</h3>
+                    <p class="content-paragraph leading-relaxed">
+                        Um agradecimento especial a todos os indivíduos e instituições que contribuíram com informações, documentos e fotografias, permitindo que esta história fosse contada. Agradecemos também aos descendentes das famílias Panceri, Pizzamiglio, Scavino e Bertuzzi pela colaboração e por compartilharem suas memórias e acervos.
+                    </p>
+                        <p class="content-paragraph leading-relaxed mt-2">
+                        [Projeto idealizado por: Iago O. Arbiza]
+                    </p>
+                </div>
+                    <div class="animate-slide-up-subtle" style="animation-delay: 0.4s;">
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-6">
+                        Versão do Infográfico: 1.4.0 (Junho 2024)
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="imageDisplayModal" class="fixed inset-0 bg-black bg-opacity-75 backdrop-blur-sm flex items-center justify-center z-[1000] hidden p-4 transition-opacity duration-300 opacity-0">
+        <div class="modal-content bg-white dark:bg-slate-800 p-4 sm:p-5 rounded-xl shadow-2xl max-w-4xl w-full max-h-[95vh] overflow-hidden flex flex-col relative transition-transform duration-300 ease-out scale-95 opacity-0">
+            <div class="flex justify-between items-center mb-3 border-b border-gray-200 dark:border-slate-700 pb-3">
+                <h3 id="imageDisplayModalTitle" class="text-lg sm:text-xl font-semibold text-gray-800 dark:text-white truncate pr-8">Visualizar Imagem</h3>
+                <button id="closeImageDisplayModalButton" class="text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-colors text-2xl sm:text-3xl leading-none focus:outline-none focus:ring-2 focus:ring-red-500 rounded-full p-1" aria-label="Fechar modal">&times;</button>
+            </div>
+            <div class="flex-grow overflow-hidden flex justify-center items-center bg-gray-100 dark:bg-slate-700 rounded-md my-2" id="imageZoomContainer">
+                <img id="modalDisplayedImage" src="" alt="Imagem Ampliada" class="max-w-full max-h-[60vh] sm:max-h-[65vh] object-contain transition-transform duration-200 ease-out" style="transform-origin: center center; cursor: zoom-in;">
+            </div>
+            <div id="imageToolbar" class="flex flex-wrap justify-center items-center gap-2 sm:gap-3 mt-3 mb-2 p-2 bg-gray-100 dark:bg-slate-700 rounded-md">
+                <button id="prevImageButton" title="Imagem Anterior" class="modal-nav-button p-2 text-sm sm:text-base bg-gray-200 dark:bg-slate-600 hover:bg-gray-300 dark:hover:bg-slate-500 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500 transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed"><i class="fa-solid fa-arrow-left"></i></button>
+                <button id="zoomInButton" title="Ampliar" class="p-2 text-sm sm:text-base bg-gray-200 dark:bg-slate-600 hover:bg-gray-300 dark:hover:bg-slate-500 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500 transition-colors"><i class="fa-solid fa-magnifying-glass-plus"></i></button>
+                <button id="zoomOutButton" title="Reduzir" class="p-2 text-sm sm:text-base bg-gray-200 dark:bg-slate-600 hover:bg-gray-300 dark:hover:bg-slate-500 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500 transition-colors"><i class="fa-solid fa-magnifying-glass-minus"></i></button>
+                <button id="resetZoomButton" title="Restaurar Zoom" class="p-2 text-sm sm:text-base bg-gray-200 dark:bg-slate-600 hover:bg-gray-300 dark:hover:bg-slate-500 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500 transition-colors"><i class="fa-solid fa-arrows-rotate"></i></button>
+                <button id="openImageNewTabButton" title="Abrir em Nova Aba" class="p-2 text-sm sm:text-base bg-gray-200 dark:bg-slate-600 hover:bg-gray-300 dark:hover:bg-slate-500 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500 transition-colors"><i class="fa-solid fa-up-right-from-square"></i></button>
+                <button id="nextImageButton" title="Próxima Imagem" class="modal-nav-button p-2 text-sm sm:text-base bg-gray-200 dark:bg-slate-600 hover:bg-gray-300 dark:hover:bg-slate-500 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500 transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed"><i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+            <p id="modalImageCaption" class="text-center text-xs sm:text-sm text-gray-700 dark:text-gray-300 mt-1 px-2 truncate"></p>
+            <div id="modalImageCorroborationText" class="text-xs text-gray-600 dark:text-gray-400 mt-2 px-2 max-h-20 overflow-y-auto border-t border-gray-200 dark:border-slate-700 pt-2 text-left">
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-center p-6 mt-12 border-t border-gray-200 dark:border-slate-700">
+        <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">&copy; <span id="currentYear"></span> Infográfico Interativo: A Trama dos Fios. Baseado no roteiro documental fornecido.</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

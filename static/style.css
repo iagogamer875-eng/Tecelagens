@@ -1,0 +1,364 @@
+/* Estilos Globais e Modo Escuro/Claro */
+html {
+    height: 100%;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f3f4f6;
+    /* Tailwind gray-100 */
+    color: #1f2937;
+    /* Tailwind gray-800 */
+}
+
+main.container {
+    /* Se você usar uma classe container em main */
+    flex-grow: 1;
+}
+
+/* Dark Mode Styles */
+html.dark body {
+    background-color: #0f172a;
+    /* Tailwind slate-900 */
+    color: #d1d5db;
+    /* Tailwind gray-300 */
+}
+
+/* Header e Navegação */
+#stickyHeaderNavWrapper {
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Botão Dark Mode Toggle */
+#darkModeToggle .dark-mode-icon,
+#darkModeToggle .light-mode-icon {
+    transition: opacity 0.3s ease;
+}
+
+html.dark #darkModeToggle .dark-mode-icon {
+    display: none;
+}
+
+html.dark #darkModeToggle .light-mode-icon {
+    display: inline;
+}
+
+html:not(.dark) #darkModeToggle .dark-mode-icon {
+    display: inline;
+}
+
+html:not(.dark) #darkModeToggle .light-mode-icon {
+    display: none;
+}
+
+
+nav#mainNav .nav-button {
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, transform 0.15s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+nav#mainNav .nav-button:hover:not(.active) {
+    background-color: #e5e7eb;
+    color: #111827;
+    transform: translateY(-2px);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08);
+}
+
+html.dark nav#mainNav .nav-button:hover:not(.active) {
+    background-color: #374151;
+    color: #f3f4f6;
+}
+
+nav#mainNav .nav-button.active {
+    background-color: #0ea5e9;
+    color: white;
+    box-shadow: 0 4px 8px rgba(14, 165, 233, 0.3);
+    transform: translateY(-1px);
+}
+
+html.dark nav#mainNav .nav-button.active {
+    background-color: #0284c7;
+    box-shadow: 0 4px 8px rgba(2, 132, 199, 0.4);
+}
+
+nav#mainNav .nav-button:active:not(.active) {
+    transform: translateY(0px);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Botões de Busca */
+#executeSearchButton,
+#clearSearchButton {
+    transition: background-color 0.2s ease-in-out, transform 0.15s ease-in-out, opacity 0.2s, box-shadow 0.2s ease-in-out;
+}
+
+#executeSearchButton:hover,
+#clearSearchButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08);
+}
+
+#executeSearchButton:active,
+#clearSearchButton:active {
+    transform: translateY(0px);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Seções de Conteúdo e Animações */
+.content-section {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.4s ease-out;
+}
+
+.content-section.active-section {
+    display: block;
+    /* A animação é aplicada pela classe de animação do Tailwind, agora no HTML */
+}
+
+/* Animação em cascata para itens dentro de seções */
+.animate-slide-up-subtle {
+    opacity: 0;
+    animation: slideUpSubtle 0.5s ease-out forwards;
+}
+
+.animate-fade-in-subtle {
+    opacity: 0;
+    animation: fadeInSubtle 0.5s ease-out forwards;
+}
+
+
+/* Timeline */
+.timeline-item {
+    border-left: 3px solid #0ea5e9;
+}
+
+html.dark .timeline-item {
+    border-left-color: #0284c7;
+}
+
+.timeline-dot {
+    background-color: #0ea5e9;
+    border: 3px solid white;
+}
+
+html.dark .timeline-dot {
+    background-color: #0284c7;
+    border-color: #1f2937;
+}
+
+.event-title {
+    transition: color 0.2s, background-color 0.2s;
+}
+
+.event-title:hover {
+    color: #0ea5e9;
+    background-color: #f9fafb;
+}
+
+html.dark .event-title:hover {
+    color: #38bdf8;
+    background-color: #1f2937;
+}
+
+.event-details {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s cubic-bezier(0.25, 0.1, 0.25, 1), padding 0.5s cubic-bezier(0.25, 0.1, 0.25, 1), margin 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+    border-left: 1px solid #e5e7eb;
+}
+
+.event-details.open {
+    max-height: 3500px;
+    /* Ajuste conforme necessário */
+}
+
+html.dark .event-details {
+    border-left-color: #374151;
+}
+
+.source-ref {
+    background-color: #fef3c7;
+    border-left: 4px solid #f59e0b;
+    color: #78350f;
+}
+
+html.dark .source-ref {
+    background-color: #451a03;
+    border-left-color: #d97706;
+    color: #fef3c7;
+}
+
+.search-highlight {
+    background-color: #fef08a;
+    font-weight: bold;
+    color: #713f12;
+    padding: 0.1rem 0.2rem;
+    border-radius: 0.25rem;
+}
+
+html.dark .search-highlight {
+    background-color: #facc15;
+    color: #422006;
+}
+
+/* Galeria com Tópicos Expansíveis */
+.gallery-subsection-title {
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.gallery-subsection-title.expanded {
+    background-color: #c7d2fe !important;
+    /* Tailwind indigo-200 */
+}
+
+html.dark .gallery-subsection-title.expanded {
+    background-color: #4338ca !important;
+    /* Tailwind indigo-700 */
+    color: #e0e7ff !important;
+    /* Tailwind indigo-100 */
+}
+
+.gallery-toggle-icon {
+    transition: transform 0.3s ease-in-out;
+    font-size: 0.9em;
+    margin-left: 0.5rem;
+}
+
+.gallery-images-wrapper {
+    overflow: hidden;
+    transition: max-height 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+/* Filtros de Tags da Galeria */
+
+#gallery-tags-wrapper {
+    /* Para animar o expandir/recolher dos botões de tag */
+    transition: max-height 0.3s ease-in-out;
+    overflow: hidden;
+    /* Essencial para max-height funcionar */
+}
+
+.gallery-filter-toggle-icon.rotate-180 {
+    /* Classe para o ícone rotacionado */
+    transform: rotate(180deg);
+}
+
+
+.tag-filter-button {
+    padding: 0.3rem 0.75rem;
+    border-radius: 0.375rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
+    border: 1px solid #d1d5db;
+    background-color: #f9fafb;
+    color: #374151;
+}
+
+.tag-filter-button:hover {
+    background-color: #e5e7eb;
+    transform: translateY(-1px);
+}
+
+.tag-filter-button.active {
+    background-color: #0ea5e9;
+    color: white;
+    border-color: #0284c7;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+html.dark .tag-filter-button {
+    background-color: #374151;
+    color: #d1d5db;
+    border-color: #4b5563;
+}
+
+html.dark .tag-filter-button:hover {
+    background-color: #4b5563;
+}
+
+html.dark .tag-filter-button.active {
+    background-color: #0284c7;
+    color: white;
+    border-color: #0369a1;
+}
+
+#clear-gallery-tags-filter {
+    transition: opacity 0.2s ease, background-color 0.2s ease, transform 0.1s ease;
+}
+
+/* Modal de Visualização de Imagem */
+#imageDisplayModal {
+    transition: opacity 0.3s ease-out;
+}
+
+#imageDisplayModal .modal-content {
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease-out;
+}
+
+#imageDisplayModal.hidden .modal-content {
+    /* Estado inicial quando hidden */
+    transform: scale(0.95);
+    opacity: 0;
+}
+
+#imageDisplayModal:not(.hidden) .modal-content {
+    /* Estado quando visível */
+    transform: scale(1);
+    opacity: 1;
+}
+
+/* Indicador de Carregamento (Spinner) */
+#loading-indicator {
+    transition: opacity 0.3s ease-in-out;
+}
+
+.loader-spinner {
+    border: 5px solid #e5e7eb;
+    border-top: 5px solid #0ea5e9;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 0.8s linear infinite;
+}
+
+html.dark .loader-spinner {
+    border: 5px solid #374151;
+    border-top: 5px solid #0284c7;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Estilos para o Glossário */
+#glossario-section .glossary-term {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px dashed #e5e7eb;
+}
+
+#glossario-section .glossary-term:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+html.dark #glossario-section .glossary-term {
+    border-bottom-color: #374151;
+}
